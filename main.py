@@ -9,11 +9,6 @@ app = FastAPI()
 URL_DATABASE = ''
 engine = create_engine(URL_DATABASE)
 
-class Patient(SQLModel, table=True):
-    
-with Session(engine) as session:
-
-
 @app.get("/introduction")
 def introduction_page():
     return {"message":"this is a backend project for patients database for a hospital"}

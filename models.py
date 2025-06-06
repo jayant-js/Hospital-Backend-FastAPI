@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel, Field
 from typing import Annotated, Optional, List
-from datetime import time
+from datetime import time, date
 from pydantic import computed_field
 
 class Patient(SQLModel, table=True):
@@ -35,7 +35,7 @@ class Specialization(SQLModel, table=True):
 
 class DoctorSpecialization(SQLModel, table=True):
     doctor_id: Annotated[int, Field(..., foreign_key="doctor.doctor_id")]
-    specialization_id: Annotated[int, Field(..., )]
+    specialization_id: Annotated[int, Field(..., description="")]
 
 class TimeSlot(SQLModel, table = True):
     timeslot_id: Annotated[int, Field(..., primary_key=True)]
@@ -45,4 +45,14 @@ class TimeSlot(SQLModel, table = True):
 class DoctorTimeSlot(SQLModel, table = True):
     doctor_id: Annotated[int, Field(..., foreign_key="doctor.doctor_id", description="Give the doctor id")]
     timeslot_id: Annotated[int, Field(..., foreign_key="timeslot.timeslot_id")]
+    available_date: Annotated[date, Field(..., description="Give the date on which date the doctor is available")]
+    booking_count: Annotated[int, Field(...)]
+
+class Appointment(SQLModel, table=True):
+    appointment_id: Annotated[int, Field(default = None, primary_key=True)]
+    patient_id: Annotated[int, Field(..., )]
+    doctor_id: Annotated[int, Field(..., )]
+    timeslot_id: Annotated[int, Field(..., foreign_key="timeslot.timeslot_id")]
+    date: Annotated[date, Field(..., )]
+    status: Annotated[str, Field(..., )]
 
