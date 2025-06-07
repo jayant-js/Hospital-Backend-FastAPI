@@ -1,12 +1,13 @@
-from fastapi import FastAPI, HTTPException, Path, Query, Depends, APIRouter
-from CRUD import *
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from sqlmodel import Field, SQLModel, create_engine, select
+from sqlmodel import SQLModel
 from database import *
+from CRUD import *
+from CRUD import __all__
 
 app = FastAPI()
-app.include_router(patient_router)
+for router_name in __all__:
+    app.include_router(globals()[router_name])
 
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
@@ -16,6 +17,6 @@ async def lifespan(app:FastAPI):
     create_db_and_tables() 
     yield
 
-@app.get("/introduction")
+@app.get("/")
 def introduction_page():
     return {"message":"this is a backend project for patients database for a hospital"}
