@@ -2,3 +2,6 @@
 *
 !main.py
 !models.py
+!database.py
+!CRUD/
+!CRUD/*
